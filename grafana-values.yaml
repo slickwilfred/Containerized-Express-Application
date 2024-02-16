@@ -1,0 +1,9 @@
+persistence:
+  enabled: true
+  type: pvc
+  finalizers:
+    - kubernetes.io/pvc-protection
+  accessModes:
+    - ReadWriteOnce
+  size: 10Gi
+  
