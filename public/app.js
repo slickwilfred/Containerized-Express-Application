@@ -27,9 +27,31 @@ function fetchItems() {
         const itemsList = document.getElementById('itemsList');
         itemsList.innerHTML = '';
         data.forEach(item => {
+
+            const dateObj = new Date(item.created);
+            const formattedDate = dateObj.toLocaleString('en-US', {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+                timeZoneName: 'short'
+            });
+
             const li = document.createElement('li');
-            li.textContent = `${item.name}: ${item.description}`;
+            const text = document.createTextNode(`${item.name}: ${item.description}`);
+            const date = document.createTextNode(`Date Posted: ${formattedDate}`);
+            const linebreak = document.createElement('br');
+            const br = document.createElement('br');
+            
+
+            li.appendChild(text);
+            li.appendChild(linebreak);
+            li.appendChild(date);
+
             itemsList.appendChild(li);
+            itemsList.appendChild(br);
         });
     })
     .catch((error) => {
