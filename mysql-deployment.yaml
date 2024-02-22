@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mysql
+  name: mysql # Sets the name of the deployment to mysql
 spec:
   selector:
     matchLabels:
       app: mysql
   strategy:
-    type: Recreate
-  template:
+    type: Recreate # Recreate strategy means that all existing pods wil be killed before new ones are created
+  template:        # MySQL is stateful and can't handle multiple instances simultaneously
     metadata:
       labels:
         app: mysql
     spec:
       containers:
-      - name: mysql
+      - name: mysql # Container name
         image: mysql:latest
         env:
         - name: MYSQL_ROOT_PASSWORD
@@ -26,11 +26,13 @@ spec:
         - name: MYSQL_PASSWORD
           value: "pass"
         ports:
-        - containerPort: 3306
-        volumeMounts:
-        - name: mysql-storage
-          mountPath: /var/lib/mysql
+        - containerPort: 3306 # Port that MySQL listens to
+        volumeMounts: # Defines the volumes to be mounted to the countainer
+        - name: mysql-storage # References the volume named 'mysql-storage'
+          mountPath: /var/lib/mysql # Mount point for the volume
       volumes:
-      - name: mysql-storage
+      - name: mysql-storage # Creates a volume with the specified name
         persistentVolumeClaim:
-          claimName: mysql-pvc
+          claimName: mysql-pvc # References the PersistentVolumeClaim (mysql-pvc)
+                               # This volume will be backed with a PVC named 'mysql-pvc'
+                               # This PVC needs to be created seperately and is responsible for requesting persistent storage

@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: node-app
 spec:
+  replicas: 1 # Initial number of replicas
   selector:
     matchLabels:
       app: node-app
@@ -17,6 +18,13 @@ spec:
         imagePullPolicy: Never
         ports:
         - containerPort: 3333
+        resources:
+          requests:
+            cpu: "100m" # Requested CPU 
+            memory: "100Mi" # Requested Memory
+          limits:
+            cpu: "150m"     # Limits for usage
+            memory: "150Mi"
         env:
           - name: MYSQL_HOST
             value: "mysql"
